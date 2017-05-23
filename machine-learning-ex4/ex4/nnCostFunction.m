@@ -73,7 +73,12 @@ end
 
 J=-1/m*sum(sum(Y.*log(a3)+(1-Y).*log(1-a3)))+lambda/(2*m)*(sum((Theta1(:,2:end)))+sum(sum(Theta2(:,2:end))));
 
-
+for i=1:m
+	a3i=a3(i,:);
+	yi=Y(i,:);
+	d3i=yi-a3i;
+	
+end
 
 
 
