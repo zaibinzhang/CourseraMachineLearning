@@ -66,24 +66,33 @@ z2=a1*Theta1';
 a2=[ones(m,1),sigmoid(z2)];
 a3=sigmoid(a2*Theta2');
 
-Y=zeros(size(y,1),10);
+Y=zeros(size(y,1),num_labels);
 for i=1:size(y,1)
 	Y(i,y(i,1))=1;
 end
 
-J=-1/m*sum(sum(Y.*log(a3)+(1-Y).*log(1-a3)))+lambda/(2*m)*(sum((Theta1(:,2:end)))+sum(sum(Theta2(:,2:end))));
+J=(-1/m)*sum(sum(Y.*log(a3)+(1-Y).*log(1-a3)))+lambda/(2*m)*(sum(sum(Theta1(:,2:end)))+sum(sum(Theta2(:,2:end))));
+
+delta2=zeros(size(Theta2));
+delta1=zeros(size(Theta1));
 
 for i=1:m
-	a3i=a3(i,:);
-	yi=Y(i,:);
-	d3i=yi-a3i;
+	a1i=a1(i,:)';
+	a3i=a3(i,:)';
+	a2i=a2(i,:)';
+	yi=Y(i,:)';
+	d3i=a3i-yi;
+	d2i=Theta2'*d3i.*a2i.*(1-a2i);
 	
+	delta1=delta1+d2i(2:end)*a1i';
+	delta2=delta2+d3i*a2i';
 end
 
+Theta1ZeroBias = [ zeros(size(Theta1, 1), 1) Theta1(:,2:end) ];
+Theta2ZeroBias = [ zeros(size(Theta2, 1), 1) Theta2(:,2:end) ];
 
-
-
-
+Theta1_grad=1/m*(delta1+lambda*Theta1ZeroBias);
+Theta2_grad=1/m*(delta2+lambda*Theta2ZeroBias);
 
 % -------------------------------------------------------------
 
