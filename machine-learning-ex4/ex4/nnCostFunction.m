@@ -82,7 +82,8 @@ for i=1:m
 	a2i=a2(i,:)';
 	yi=Y(i,:)';
 	d3i=a3i-yi;
-	d2i=Theta2'*d3i.*a2i.*(1-a2i);
+	z2i=[1;Theta1*a1i];
+	d2i=Theta2'*d3i.*sigmoidGradient(z2i);
 	
 	delta1=delta1+d2i(2:end)*a1i';
 	delta2=delta2+d3i*a2i';
